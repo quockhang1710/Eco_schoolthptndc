@@ -1,0 +1,743 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#087443">
+<meta name="description" content="ECO SORT - Học phân loại rác, hoàn thành nhiệm vụ xanh và bảo vệ hành tinh.">
+<title>ECO SORT | Smart Recycling</title>
+<style>
+:root{
+  --green:#087443;--green2:#11965a;--green3:#35bd78;--mint:#e5f7eb;
+  --light:#f1f8f3;--dark:#173b2b;--muted:#718477;--blue:#258bd5;
+  --brown:#98603a;--gray:#727b83;--white:#fff;--line:#e3eee6;
+  --shadow:0 12px 34px rgba(20,75,45,.09)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--dark);background:radial-gradient(circle at 8% 8%,#d9f3e2 0,transparent 26%),linear-gradient(180deg,#edf8f0 0,#f8fbf8 50%,#eaf6ee 100%)}
+button,input{font:inherit}
+button{border:0;border-radius:13px;padding:12px 18px;background:linear-gradient(135deg,var(--green2),var(--green));color:#fff;font-weight:700;font-size:15px;cursor:pointer;transition:transform .2s,filter .2s,box-shadow .2s;box-shadow:0 5px 12px #08744320}
+button:hover{filter:brightness(1.05);transform:translateY(-2px);box-shadow:0 8px 16px #08744326}
+button:active{transform:translateY(0)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+button:focus-visible,input:focus-visible{outline:3px solid #79d99e;outline-offset:3px}
+.secondary-btn{background:#e7f5eb;color:var(--green);box-shadow:none}
+.topbar{position:sticky;top:0;z-index:10;background:rgba(7,103,59,.96);backdrop-filter:blur(12px);color:white;padding:14px max(5%,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:0 5px 20px #064c2c20}
+.logo{font-size:25px;font-weight:900;letter-spacing:1px}
+.logo small{display:block;font-size:10px;letter-spacing:3px;font-weight:600;opacity:.82;margin:3px 0 0 36px}
+.header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.topbar button{background:white;color:var(--green);padding:10px 15px}
+main{max-width:1120px;margin:27px auto;padding:0 17px}
+.panel{background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:24px;padding:25px;margin-bottom:22px;box-shadow:var(--shadow)}
+.hidden{display:none!important}
+h1,h2,h3{margin-top:0}
+h1,h2{text-align:center}
+.subtitle{text-align:center;color:var(--muted);line-height:1.65}
+.auth-panel{max-width:470px;margin:55px auto}
+.auth-mark{text-align:center;font-size:48px;margin:2px 0 8px;animation:float 3s ease-in-out infinite}
+.auth-panel input{width:100%;padding:15px;margin:8px 0 13px;border:1px solid #cbded0;border-radius:13px;font-size:16px;background:#fbfefb;outline:none}
+.auth-panel input:focus{border-color:var(--green2)}
+.status{text-align:center;font-weight:700;margin:14px 0;line-height:1.5}
+.small{font-size:12px;color:var(--muted);line-height:1.5}
+.hero{position:relative;overflow:hidden;min-height:220px;display:flex;align-items:center;justify-content:space-between;gap:20px;color:white;background:linear-gradient(120deg,#075b36 0%,#0b8750 58%,#49c27f 100%)}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:#ffffff12}
+.hero:before{width:240px;height:240px;right:12%;top:-130px}
+.hero:after{width:180px;height:180px;right:0;bottom:-110px}
+.hero-copy{position:relative;z-index:1;max-width:690px}
+.hero h1{text-align:left;font-size:clamp(28px,5vw,43px);line-height:1.12;margin:0 0 12px}
+.hero p{line-height:1.7;color:#e5f8eb;margin:0;max-width:630px}
+.hero-pill{display:inline-block;background:#ffffff24;border:1px solid #ffffff55;border-radius:30px;padding:7px 12px;font-size:12px;font-weight:700;letter-spacing:.5px;margin-bottom:14px}
+.hero-art{font-size:clamp(75px,12vw,112px);position:relative;z-index:1;margin:0 3%;animation:float 3.2s ease-in-out infinite;filter:drop-shadow(0 10px 12px #003b2450)}
+@keyframes float{50%{transform:translateY(-9px)}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{position:relative;overflow:hidden;background:linear-gradient(145deg,#f1fbf4,#e2f5e9);padding:18px;border-radius:18px;text-align:center;border:1px solid #d9eee0}
+.stat:nth-child(2){background:linear-gradient(145deg,#f1f7ff,#e5f0ff);border-color:#dceaff}
+.stat:nth-child(3){background:linear-gradient(145deg,#fff8e9,#fff0d5);border-color:#f6e8c9}
+.stat span{font-size:12px;color:#527563;font-weight:700;letter-spacing:.4px}
+.stat strong{display:block;font-size:30px;color:var(--green2);margin-top:7px}
+.stat:nth-child(2) strong{color:#347cc1}
+.stat:nth-child(3) strong{color:#d18a24}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.section-heading h2{text-align:left;margin:0}
+.section-tag{font-size:11px;font-weight:800;color:var(--green);background:#e7f6eb;padding:7px 10px;border-radius:20px;white-space:nowrap}
+.mission-intro{color:var(--muted);font-size:14px;line-height:1.6;margin:10px 0 0}
+.mission-list{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:19px}
+.mission{position:relative;overflow:hidden;background:linear-gradient(150deg,#fbfefb,#f0f9f2);border:1px solid #e0eee3;border-radius:19px;padding:18px;display:flex;flex-direction:column;gap:11px;min-width:0;transition:transform .2s,box-shadow .2s}
+.mission:hover{transform:translateY(-3px);box-shadow:0 10px 20px #164b2a12}
+.mission:after{content:"";position:absolute;width:95px;height:95px;border-radius:50%;right:-43px;top:-45px;background:#dff4e5;opacity:.7}
+.mission-top{display:flex;align-items:center;justify-content:space-between;gap:8px;position:relative;z-index:1}
+.mission-icon{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:#e1f5e7;font-size:24px}
+.mission:nth-child(2) .mission-icon{background:#e5efff}
+.mission:nth-child(3) .mission-icon{background:#fff1d9}
+.mission h3{font-size:16px;margin:0}
+.mission p{font-size:13px;color:var(--muted);line-height:1.5;margin:0;min-height:38px}
+.reward-points{color:var(--green2);font-size:13px;font-weight:800;white-space:nowrap}
+.progress-track{height:9px;border-radius:20px;background:#e4ece6;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#13a15c,#75d99b);border-radius:20px;transition:width .35s}
+.mission:nth-child(2) .progress-fill{background:linear-gradient(90deg,#398bd6,#81baff)}
+.mission:nth-child(3) .progress-fill{background:linear-gradient(90deg,#e5a12d,#f5d16c)}
+.mission-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.mission button{width:100%;padding:10px;font-size:13px}
+.mission button:disabled{background:#e0ece3;color:#547460}
+.upload-area{border:2px dashed #92c9a3;border-radius:19px;padding:24px;text-align:center;background:linear-gradient(145deg,#f9fdf9,#eff9f1)}
+.upload-icon{font-size:43px}
+.upload-area input{max-width:100%;margin:9px auto 12px}
+.upload-area p{color:var(--muted);font-size:14px;line-height:1.5}
+#preview{display:block;max-width:100%;max-height:330px;margin:18px auto;border-radius:15px;object-fit:contain;box-shadow:0 6px 18px #163d2415}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:22px}
+.bin-card{background:#f8fbf9;border-radius:19px;padding:18px 13px;text-align:center;border:1px solid #e4eee6;transition:.2s}
+.bin-card:hover{border-color:#8ac49a;transform:translateY(-4px);box-shadow:0 8px 18px #164b2a10}
+.bin{width:88px;height:96px;margin:28px auto 22px;position:relative;border-radius:9px 9px 17px 17px;animation:bounce 2.8s infinite ease-in-out;box-shadow:inset -8px 0 #00000012,0 8px 12px #00000015}
+.bin:before{content:"";position:absolute;top:-12px;left:-7px;width:102px;height:14px;border-radius:7px;background:inherit;filter:brightness(.85)}
+.bin:after{content:"";position:absolute;top:-23px;left:30px;width:28px;height:7px;border:4px solid #444;border-bottom:0;border-radius:8px 8px 0 0}
+.symbol{position:absolute;top:25px;left:0;right:0;color:white;font-size:35px;font-weight:bold}
+.blue{background:var(--blue)}
+.brown{background:var(--brown)}
+.gray{background:var(--gray)}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px) rotate(2deg)}}
+.bin-card:nth-child(2) .bin{animation-delay:.3s}
+.bin-card:nth-child(3) .bin{animation-delay:.6s}
+.bin-card h3{margin-bottom:7px}
+.bin-card p{font-size:13px;color:var(--muted);line-height:1.5;min-height:38px}
+.bin-card button{width:100%;margin-top:8px}
+.result{text-align:center;font-size:16px;font-weight:700;padding:16px;border-radius:13px;margin-top:18px;line-height:1.5}
+.success{background:#dff6e5;color:#126b39}
+.error{background:#fff0df;color:#9b4c12}
+.rewards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.reward{background:linear-gradient(145deg,#f8fcf9,#eef8f1);padding:20px 13px;text-align:center;border-radius:18px;border:1px solid #e5efe7}
+.reward:nth-child(2){background:linear-gradient(145deg,#f6f9ff,#eaf2ff)}
+.reward:nth-child(3){background:linear-gradient(145deg,#fffaf0,#fff2d9)}
+.reward .emoji{font-size:43px}
+.reward p{color:var(--muted)}
+.reward button{width:100%}
+.qr-area{text-align:center}
+.qr-area img{width:190px;height:190px;object-fit:contain;padding:9px;border:1px solid #ddd;border-radius:14px;background:white}
+.qr-url{overflow-wrap:anywhere;color:#557464;font-size:13px;margin:12px 0}
+.footer{text-align:center;color:#789083;padding:26px 15px 35px}
+.footer strong{color:var(--green)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#173d2a;color:white;padding:12px 18px;border-radius:30px;box-shadow:var(--shadow);z-index:20;font-size:14px;text-align:center;max-width:90%;animation:toastIn .25s ease}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@media(max-width:720px){
+  main{margin:17px auto}
+  .panel{padding:19px;border-radius:20px}
+  .topbar{padding:13px 16px}
+  .logo{font-size:21px}
+  .logo small{font-size:9px}
+  .hero{min-height:190px}
+  .hero-art{font-size:72px;margin:0}
+  .mission-list{grid-template-columns:1fr}
+  .mission p{min-height:0}
+  .bins{grid-template-columns:1fr}
+  .bin-card{padding:15px}
+  .bin-card p{min-height:0}
+  .rewards{grid-template-columns:1fr}
+  .stats{gap:8px}
+  .stat{padding:14px 6px}
+  .stat strong{font-size:24px}
+  .stat span{font-size:10px}
+  .section-heading{align-items:flex-start}
+  .section-heading h2{font-size:20px}
+}
+@media(min-width:721px) and (max-width:950px){
+  .mission-list{grid-template-columns:repeat(2,1fr)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">♻ ECO SORT<small>SMART RECYCLING</small></div>
+  <div class="header-right">
+    <span id="userLabel">Welcome!</span>
+    <button id="logoutBtn" class="hidden" onclick="logout()">Log out</button>
+  </div>
+</header>
+
+<section id="auth" class="panel auth-panel">
+  <div class="auth-mark">🌱</div>
+  <h1>Welcome to ECO SORT</h1>
+  <p class="subtitle">Small actions today, a greener planet tomorrow.</p>
+  <input id="username" placeholder="Enter your username" autocomplete="username" maxlength="24">
+  <input id="password" type="password" placeholder="Enter your password" autocomplete="current-password" maxlength="64">
+  <button style="width:100%" onclick="login()">Sign in / Create account</button>
+  <p id="authMessage" class="status" aria-live="polite"></p>
+  <p class="small" style="text-align:center">Demo version: account data is stored in this browser.</p>
+</section>
+
+<main id="app" class="hidden">
+  <section class="panel hero">
+    <div class="hero-copy">
+      <span class="hero-pill">🌍 LIVE GREEN • LIVE CLEAN</span>
+      <h1>Make Earth a better place!</h1>
+      <p>Chụp ảnh rác, chọn thùng phù hợp, hoàn thành nhiệm vụ và tích lũy điểm xanh mỗi ngày.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">🌎</div>
+  </section>
+
+  <section class="panel">
+    <div class="stats">
+      <div class="stat"><span>⭐ YOUR POINTS</span><strong id="points">0</strong></div>
+      <div class="stat"><span>🏆 YOUR LEVEL</span><strong id="level">1</strong></div>
+      <div class="stat"><span>🔥 DAILY STREAK</span><strong id="streak">1</strong></div>
+    </div>
+  </section>
+
+  <section class="panel" id="dailyMissions">
+    <div class="section-heading">
+      <h2>🎯 Daily Missions</h2>
+      <span class="section-tag">🔄 Làm mới mỗi ngày</span>
+    </div>
+    <p class="mission-intro">Hoàn thành thử thách hôm nay để nhận thêm điểm thưởng. Tiến độ được tự động lưu trên trình duyệt này.</p>
+    <div class="mission-list">
+      <article class="mission">
+        <div class="mission-top"><div class="mission-icon">📸</div><span class="reward-points">+10 POINTS</span></div>
+        <h3>Thợ săn rác</h3>
+        <p>Chụp hoặc tải lên ít nhất một bức ảnh rác trong ngày.</p>
+        <div class="progress-track"><div id="photoProgressBar" class="progress-fill"></div></div>
+        <div class="mission-foot"><span id="photoProgressText">0/1 hoàn thành</span><span id="photoMissionState">Chưa xong</span></div>
+        <button id="photoClaimBtn" onclick="claimMission('photo')" disabled>Hoàn thành nhiệm vụ</button>
+      </article>
+
+      <article class="mission">
+        <div class="mission-top"><div class="mission-icon">♻️</div><span class="reward-points">+20 POINTS</span></div>
+        <h3>Người phân loại</h3>
+        <p>Hoàn thành phân loại thành công 3 lượt rác trong ngày.</p>
+        <div class="progress-track"><div id="sortProgressBar" class="progress-fill"></div></div>
+        <div class="mission-foot"><span id="sortProgressText">0/3 hoàn thành</span><span id="sortMissionState">Chưa xong</span></div>
+        <button id="sortClaimBtn" onclick="claimMission('sort')" disabled>Hoàn thành nhiệm vụ</button>
+      </article>
+
+      <article class="mission">
+        <div class="mission-top"><div class="mission-icon">🌳</div><span class="reward-points">+30 POINTS</span></div>
+        <h3>Chiến binh xanh</h3>
+        <p>Hoàn thành hai nhiệm vụ đầu tiên để mở khóa thử thách cuối.</p>
+        <div class="progress-track"><div id="greenProgressBar" class="progress-fill"></div></div>
+        <div class="mission-foot"><span id="greenProgressText">0/2 hoàn thành</span><span id="greenMissionState">Chưa xong</span></div>
+        <button id="greenClaimBtn" onclick="claimMission('green')" disabled>Hoàn thành nhiệm vụ</button>
+      </article>
+    </div>
+    <p class="small" style="margin:15px 0 0">💡 Mỗi lượt phân loại hợp lệ vẫn nhận 10 điểm như trước. Điểm nhiệm vụ là phần thưởng cộng thêm.</p>
+  </section>
+
+  <section class="panel">
+    <h2>📸 Take or Upload a Photo</h2>
+    <p class="subtitle">Chụp ảnh rác hoặc chọn ảnh có sẵn trong thiết bị của bạn.</p>
+    <div class="upload-area">
+      <div class="upload-icon">📷</div>
+      <input type="file" id="photo" accept="image/*" capture="environment">
+      <img id="preview" class="hidden" alt="Your waste photo">
+      <p id="photoStatus" class="status">No photo selected yet.</p>
+      <button onclick="startSorting()">Start Sorting</button>
+    </div>
+  </section>
+
+  <section class="panel" id="binsSection">
+    <h2>🗑️ Choose Your Waste Bin</h2>
+    <p class="subtitle">Quan sát ảnh và tự chọn một trong ba loại thùng rác phù hợp.</p>
+    <div class="bins">
+      <div class="bin-card">
+        <div class="bin blue"><span class="symbol">♻</span></div>
+        <h3>Blue Bin</h3>
+        <p><b>Recyclable Waste</b><br>Paper, plastic bottles, metal cans.</p>
+        <button onclick="chooseBin('recyclable')">Choose Blue</button>
+      </div>
+      <div class="bin-card">
+        <div class="bin brown"><span class="symbol">🍃</span></div>
+        <h3>Brown Bin</h3>
+        <p><b>Organic Waste</b><br>Food scraps, fruit peels, leaves.</p>
+        <button onclick="chooseBin('organic')">Choose Brown</button>
+      </div>
+      <div class="bin-card">
+        <div class="bin gray"><span class="symbol">🗑</span></div>
+        <h3>Gray Bin</h3>
+        <p><b>General Waste</b><br>Non-recyclable household waste.</p>
+        <button onclick="chooseBin('general')">Choose Gray</button>
+      </div>
+    </div>
+    <div id="result" class="result hidden" aria-live="polite"></div>
+    <div style="text-align:center;margin-top:15px">
+      <button id="retryBtn" class="secondary-btn hidden" onclick="resetRound()">Try Another Photo</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>🎁 Virtual Rewards</h2>
+    <p class="subtitle">Dùng điểm xanh để đổi phần thưởng ảo.</p>
+    <div class="rewards">
+      <div class="reward">
+        <div class="emoji">🌱</div>
+        <h3>Green Starter</h3>
+        <p>10 Points</p>
+        <button onclick="redeem(10,'Green Starter')">Redeem</button>
+      </div>
+      <div class="reward">
+        <div class="emoji">🌳</div>
+        <h3>Tree Guardian</h3>
+        <p>30 Points</p>
+        <button onclick="redeem(30,'Tree Guardian')">Redeem</button>
+      </div>
+      <div class="reward">
+        <div class="emoji">🌎</div>
+        <h3>Planet Hero</h3>
+        <p>50 Points</p>
+        <button onclick="redeem(50,'Planet Hero')">Redeem</button>
+      </div>
+    </div>
+    <p id="rewardMessage" class="status" aria-live="polite"></p>
+  </section>
+
+  <section class="panel qr-area">
+    <h2>📱 Share ECO SORT</h2>
+    <p class="subtitle">Quét mã QR để mở website ECO SORT.</p>
+    <img id="qrImage" alt="ECO SORT website QR code">
+    <p id="qrUrl" class="qr-url"></p>
+    <button onclick="copyWebsiteLink()">Copy Website Link</button>
+    <p id="qrStatus" class="small" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer class="footer">© 2026 <strong>ECO SORT</strong> — Small actions, cleaner planet 🌿</footer>
+
+<script>
+'use strict';
+
+let currentUser=null;
+let photoReady=false;
+let answered=false;
+let currentPhotoURL=null;
+
+const $=id=>document.getElementById(id);
+
+function getAccounts(){
+  try{
+    return JSON.parse(localStorage.getItem('ecoSortAccounts')||'{}')||{};
+  }catch(error){
+    return {};
+  }
+}
+
+function saveAccounts(accounts){
+  try{
+    localStorage.setItem('ecoSortAccounts',JSON.stringify(accounts));
+    return true;
+  }catch(error){
+    showToast('Không thể lưu dữ liệu. Hãy kiểm tra dung lượng trình duyệt.');
+    return false;
+  }
+}
+
+function todayKey(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function yesterdayKey(){
+  const d=new Date();
+  d.setDate(d.getDate()-1);
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function ensureAccountDefaults(account){
+  if(typeof account.points!=='number')account.points=0;
+  if(!Array.isArray(account.rewards))account.rewards=[];
+  if(typeof account.streak!=='number')account.streak=1;
+  if(!account.lastLogin)account.lastLogin=todayKey();
+  ensureDaily(account);
+}
+
+function ensureDaily(account){
+  const today=todayKey();
+
+  if(!account.daily||account.daily.date!==today){
+    account.daily={
+      date:today,
+      photoDone:false,
+      sortCount:0,
+      claimed:{}
+    };
+  }
+
+  if(typeof account.daily.photoDone!=='boolean')account.daily.photoDone=false;
+  if(typeof account.daily.sortCount!=='number')account.daily.sortCount=0;
+  if(!account.daily.claimed||typeof account.daily.claimed!=='object'){
+    account.daily.claimed={};
+  }
+
+  return account.daily;
+}
+
+function updateStats(){
+  if(!currentUser)return;
+
+  const accounts=getAccounts();
+  const account=accounts[currentUser];
+  if(!account)return;
+
+  ensureAccountDefaults(account);
+
+  $('points').textContent=account.points;
+  $('level').textContent=Math.floor(account.points/50)+1;
+  $('streak').textContent=account.streak;
+
+  updateMissions(account);
+  saveAccounts(accounts);
+}
+
+function updateMissions(account){
+  const d=ensureDaily(account);
+  const sortCount=Math.min(d.sortCount,3);
+
+  const items=[
+    {key:'photo',done:d.photoDone,progress:d.photoDone?1:0,total:1},
+    {key:'sort',done:sortCount>=3,progress:sortCount,total:3},
+    {key:'green',done:d.photoDone&&sortCount>=3,progress:(d.photoDone?1:0)+(sortCount>=3?1:0),total:2}
+  ];
+
+  items.forEach(item=>{
+    const key=item.key;
+
+    $(key+'ProgressBar').style.width=(item.progress/item.total*100)+'%';
+    $(key+'ProgressText').textContent=item.progress+'/'+item.total+' hoàn thành';
+
+    $(key+'MissionState').textContent=
+      d.claimed[key]?'Đã nhận thưởng':
+      item.done?'Đã hoàn thành':'Chưa xong';
+
+    const btn=$(key+'ClaimBtn');
+    btn.disabled=!item.done||!!d.claimed[key];
+
+    btn.textContent=
+      d.claimed[key]?'Đã nhận điểm':
+      item.done?'Nhận thưởng':'Hoàn thành nhiệm vụ';
+  });
+}
+
+function login(){
+  const name=$('username').value.trim();
+  const password=$('password').value;
+  const message=$('authMessage');
+
+  if(name.length<3){
+    message.textContent='Username must have at least 3 characters.';
+    return;
+  }
+
+  if(password.length<4){
+    message.textContent='Password must have at least 4 characters.';
+    return;
+  }
+
+  const accounts=getAccounts();
+
+  if(accounts[name]){
+    if(accounts[name].password!==password){
+      message.textContent='Incorrect password. Please try again.';
+      return;
+    }
+  }else{
+    accounts[name]={
+      password:password,
+      points:0,
+      rewards:[],
+      streak:1,
+      lastLogin:todayKey(),
+      daily:{
+        date:todayKey(),
+        photoDone:false,
+        sortCount:0,
+        claimed:{}
+      }
+    };
+  }
+
+  const account=accounts[name];
+  ensureAccountDefaults(account);
+
+  if(account.lastLogin!==todayKey()){
+    account.streak=
+      account.lastLogin===yesterdayKey()?
+      (account.streak||1)+1:1;
+
+    account.lastLogin=todayKey();
+  }
+
+  ensureDaily(account);
+
+  if(!saveAccounts(accounts)){
+    message.textContent='Không thể lưu tài khoản trên trình duyệt này.';
+    return;
+  }
+
+  currentUser=name;
+
+  $('auth').classList.add('hidden');
+  $('app').classList.remove('hidden');
+  $('logoutBtn').classList.remove('hidden');
+  $('userLabel').textContent='Hello, '+name+'!';
+  message.textContent='';
+
+  updateStats();
+  updateQR();
+}
+
+function logout(){
+  currentUser=null;
+
+  $('app').classList.add('hidden');
+  $('auth').classList.remove('hidden');
+  $('logoutBtn').classList.add('hidden');
+  $('userLabel').textContent='Welcome!';
+  $('password').value='';
+
+  if(currentPhotoURL){
+    URL.revokeObjectURL(currentPhotoURL);
+    currentPhotoURL=null;
+  }
+
+  photoReady=false;
+  answered=false;
+  $('photo').value='';
+  $('preview').src='';
+  $('preview').classList.add('hidden');
+}
+
+$('photo').addEventListener('change',function(){
+  const file=this.files&&this.files[0];
+  if(!file)return;
+
+  if(!file.type.startsWith('image/')){
+    $('photoStatus').textContent='Please select a valid image.';
+    this.value='';
+    return;
+  }
+
+  if(currentPhotoURL)URL.revokeObjectURL(currentPhotoURL);
+
+  currentPhotoURL=URL.createObjectURL(file);
+  $('preview').src=currentPhotoURL;
+  $('preview').classList.remove('hidden');
+
+  photoReady=true;
+  answered=false;
+
+  $('photoStatus').textContent='Photo uploaded successfully! Now choose a bin.';
+  $('result').classList.add('hidden');
+  $('retryBtn').classList.add('hidden');
+
+  markPhotoMission();
+});
+
+function markPhotoMission(){
+  if(!currentUser)return;
+
+  const accounts=getAccounts();
+  const account=accounts[currentUser];
+  if(!account)return;
+
+  const daily=ensureDaily(account);
+  daily.photoDone=true;
+
+  saveAccounts(accounts);
+  updateStats();
+}
+
+function startSorting(){
+  if(!photoReady){
+    $('photoStatus').textContent='Please take or upload a photo first.';
+    return;
+  }
+
+  $('photoStatus').textContent='Your photo is ready. Please choose one of the three bins below.';
+
+  $('binsSection').scrollIntoView({
+    behavior:'smooth',
+    block:'center'
+  });
+}
+
+function showResult(message,type){
+  $('result').textContent=message;
+  $('result').className='result '+type;
+  $('result').classList.remove('hidden');
+}
+
+function chooseBin(choice){
+  if(!currentUser){
+    showResult('Please sign in first.','error');
+    return;
+  }
+
+  if(!photoReady){
+    showResult('Please take or upload a photo first.','error');
+    return;
+  }
+
+  if(answered){
+    showResult('This photo has already been completed. Please try another photo.','error');
+    return;
+  }
+
+  const names={
+    recyclable:'Blue Bin — Recyclable Waste',
+    organic:'Brown Bin — Organic Waste',
+    general:'Gray Bin — General Waste'
+  };
+
+  if(!names[choice])return;
+
+  if(!confirm('You selected: '+names[choice]+'\n\nIs this your final answer?')){
+    return;
+  }
+
+  const accounts=getAccounts();
+  const account=accounts[currentUser];
+  if(!account)return;
+
+  const daily=ensureDaily(account);
+
+  account.points=(account.points||0)+10;
+  daily.sortCount=(daily.sortCount||0)+1;
+
+  if(!saveAccounts(accounts))return;
+
+  updateStats();
+
+  showResult('🌱 Thank you for sorting your waste! You earned 10 points.','success');
+
+  answered=true;
+  $('retryBtn').classList.remove('hidden');
+}
+
+function resetRound(){
+  if(currentPhotoURL){
+    URL.revokeObjectURL(currentPhotoURL);
+    currentPhotoURL=null;
+  }
+
+  $('photo').value='';
+  $('preview').src='';
+  $('preview').classList.add('hidden');
+  $('photoStatus').textContent='No photo selected yet.';
+  $('result').classList.add('hidden');
+  $('retryBtn').classList.add('hidden');
+
+  photoReady=false;
+  answered=false;
+}
+
+function claimMission(key){
+  if(!currentUser)return;
+
+  const accounts=getAccounts();
+  const account=accounts[currentUser];
+  if(!account)return;
+
+  const d=ensureDaily(account);
+
+  const requirements={
+    photo:d.photoDone===true,
+    sort:(d.sortCount||0)>=3,
+    green:d.photoDone===true&&(d.sortCount||0)>=3
+  };
+
+  const rewards={
+    photo:10,
+    sort:20,
+    green:30
+  };
+
+  if(!(key in requirements)||!requirements[key]||d.claimed[key]){
+    return;
+  }
+
+  d.claimed[key]=true;
+  account.points=(account.points||0)+rewards[key];
+
+  if(!saveAccounts(accounts))return;
+
+  updateStats();
+  showToast('🎉 Bạn nhận được '+rewards[key]+' điểm từ nhiệm vụ!');
+}
+
+function showToast(message){
+  const old=document.querySelector('.toast');
+  if(old)old.remove();
+
+  const el=document.createElement('div');
+  el.className='toast';
+  el.setAttribute('role','status');
+  el.textContent=message;
+
+  document.body.appendChild(el);
+  window.setTimeout(()=>el.remove(),2600);
+}
+
+function redeem(cost,name){
+  if(!currentUser){
+    alert('Please sign in first.');
+    return;
+  }
+
+  const accounts=getAccounts();
+  const account=accounts[currentUser];
+  if(!account)return;
+
+  const message=$('rewardMessage');
+
+  if((account.points||0)<cost){
+    message.textContent='Not enough points yet!';
+    return;
+  }
+
+  account.points-=cost;
+  account.rewards=account.rewards||[];
+  account.rewards.push(name);
+
+  if(!saveAccounts(accounts))return;
+
+  updateStats();
+  message.textContent='🎁 Successfully redeemed: '+name+'!';
+}
+
+function updateQR(){
+  const currentURL=window.location.href.split('#')[0];
+  const qr=$('qrImage');
+
+  $('qrUrl').textContent=currentURL;
+
+  if(!currentURL.startsWith('http://')&&!currentURL.startsWith('https://')){
+    qr.style.display='none';
+    $('qrUrl').textContent='Publish this website on GitHub Pages to create a working QR code.';
+    return;
+  }
+
+  qr.style.display='inline-block';
+  qr.src='https://api.qrserver.com/v1/create-qr-code/?size=300x300&data='+encodeURIComponent(currentURL);
+}
+
+function copyWebsiteLink(){
+  const url=window.location.href.split('#')[0];
+
+  if(!url.startsWith('https://')&&!url.startsWith('http://')){
+    $('qrStatus').textContent='Publish your website first to get a public link.';
+    return;
+  }
+
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(url)
+      .then(()=>$('qrStatus').textContent='Website link copied!')
+      .catch(()=>$('qrStatus').textContent='Please copy the website address from your browser.');
+  }else{
+    $('qrStatus').textContent='Please copy the website address from your browser.';
+  }
+}
+
+updateQR();
+</script>
+</body>
+</html>
